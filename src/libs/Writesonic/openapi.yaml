@@ -1,0 +1,1365 @@
+openapi: 3.0.3
+info:
+  title: Writesonic API
+  description: |
+    Writesonic API provides access to AI content generation, ChatSonic chatbot,
+    Photosonic image generation, SEO tools, and content optimization.
+    Authentication uses the X-API-KEY header with your API key.
+  version: '2.0.0'
+  contact:
+    name: Writesonic
+    url: https://writesonic.com/api
+servers:
+  - url: https://api.writesonic.com
+    description: Production server
+security:
+  - BearerAuth: []
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    # ─── Common Types ───
+    ContentOutput:
+      type: object
+      description: A generated content output.
+      properties:
+        text:
+          type: string
+          description: The generated content text.
+          minLength: 1
+      required:
+        - text
+
+    ValidationError:
+      type: object
+      description: Validation error detail.
+      properties:
+        detail:
+          type: array
+          items:
+            type: object
+            properties:
+              loc:
+                type: array
+                items:
+                  type: string
+              msg:
+                type: string
+              type:
+                type: string
+
+    HistoryEntry:
+      type: object
+      description: A conversation history entry for ChatSonic memory.
+      properties:
+        is_sent:
+          type: boolean
+          description: True if the message was sent by the user, false if by ChatSonic.
+        message:
+          type: string
+          description: The message text.
+      required:
+        - is_sent
+        - message
+
+    # ─── ChatSonic Types ───
+    ChatSonicRequest:
+      type: object
+      description: Request body for ChatSonic conversation.
+      properties:
+        enable_google_results:
+          type: boolean
+          description: When enabled, ChatSonic uses Google search results to answer.
+          default: true
+        enable_memory:
+          type: boolean
+          description: When enabled, ChatSonic remembers previous conversation context.
+          default: false
+        input_text:
+          type: string
+          description: The question or prompt to send to ChatSonic.
+          minLength: 1
+          maxLength: 5000
+        history_data:
+          type: array
+          description: Previous conversation turns for context when memory is enabled.
+          items:
+            $ref: '#/components/schemas/HistoryEntry'
+      required:
+        - input_text
+
+    ChatSonicResponse:
+      type: object
+      description: Response from ChatSonic.
+      properties:
+        message:
+          type: string
+          description: The AI-generated response message.
+        image_urls:
+          type: array
+          description: URLs of generated images, if any.
+          items:
+            type: string
+
+    # ─── Photosonic Types ───
+    GenerateImageRequest:
+      type: object
+      description: Request body for Photosonic image generation.
+      properties:
+        prompt:
+          type: string
+          description: Description of the image to generate.
+          minLength: 2
+          maxLength: 500
+        num_images:
+          type: integer
+          description: Number of images to generate.
+          default: 2
+          minimum: 1
+          maximum: 4
+        image_width:
+          type: integer
+          description: Image width in pixels.
+          default: 512
+        image_height:
+          type: integer
+          description: Image height in pixels.
+          default: 512
+      required:
+        - prompt
+
+    GenerateImageResponse:
+      type: object
+      description: Response from Photosonic image generation.
+      properties:
+        images:
+          type: array
+          description: Generated image URLs.
+          items:
+            type: string
+
+    # ─── Content Generation Types ───
+    BlogIdeasRequest:
+      type: object
+      properties:
+        topic:
+          type: string
+          description: Topic to generate blog article ideas for.
+          minLength: 2
+          maxLength: 200
+      required:
+        - topic
+
+    BlogIntrosRequest:
+      type: object
+      properties:
+        blog_title:
+          type: string
+          description: Title of the blog article to generate an introduction for.
+          minLength: 2
+          maxLength: 200
+      required:
+        - blog_title
+
+    BlogOutlinesRequest:
+      type: object
+      properties:
+        blog_title:
+          type: string
+          description: Title of the blog article to generate an outline for.
+          minLength: 2
+          maxLength: 200
+      required:
+        - blog_title
+
+    ArticleWriterV3Request:
+      type: object
+      properties:
+        article_title:
+          type: string
+          description: Title of the article to generate.
+          minLength: 2
+          maxLength: 200
+        article_intro:
+          type: string
+          description: A paragraph or two to introduce the article.
+          minLength: 2
+          maxLength: 2000
+        article_sections:
+          type: string
+          description: Titles of each section of the article, comma or newline separated.
+          minLength: 2
+          maxLength: 2000
+      required:
+        - article_title
+        - article_intro
+        - article_sections
+
+    ContentRephraseRequest:
+      type: object
+      properties:
+        content_to_rephrase:
+          type: string
+          description: The text content to rephrase.
+          minLength: 20
+          maxLength: 1000
+        tone_of_voice:
+          type: string
+          description: Desired tone or style for the rephrased output.
+          maxLength: 25
+      required:
+        - content_to_rephrase
+
+    ContentShortenRequest:
+      type: object
+      properties:
+        content_to_shorten:
+          type: string
+          description: The text content to shorten.
+          minLength: 20
+          maxLength: 1000
+      required:
+        - content_to_shorten
+
+    ToneChangerRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          description: The text content whose tone should be changed.
+          minLength: 20
+          maxLength: 1000
+        tone:
+          type: string
+          description: The desired tone (e.g. professional, casual, friendly, witty).
+          minLength: 2
+          maxLength: 50
+      required:
+        - content
+        - tone
+
+    AidaRequest:
+      type: object
+      properties:
+        product_name:
+          type: string
+          description: Name of the product or service.
+          minLength: 2
+          maxLength: 100
+        product_description:
+          type: string
+          description: Description of the product or service.
+          minLength: 2
+          maxLength: 600
+      required:
+        - product_name
+        - product_description
+
+    ProductDescriptionsRequest:
+      type: object
+      properties:
+        product_name:
+          type: string
+          description: Name of the product.
+          minLength: 2
+          maxLength: 100
+        product_characteristics:
+          type: string
+          description: Key features and characteristics of the product.
+          minLength: 2
+          maxLength: 600
+      required:
+        - product_name
+        - product_characteristics
+
+    FacebookAdsRequest:
+      type: object
+      properties:
+        product_name:
+          type: string
+          description: Name of the product or service.
+          minLength: 2
+          maxLength: 100
+        product_description:
+          type: string
+          description: Description of the product or service.
+          minLength: 2
+          maxLength: 600
+        occasion:
+          type: string
+          description: The occasion or context for the ad (e.g. holiday sale, launch).
+          maxLength: 100
+        promotion:
+          type: string
+          description: Any promotional offer to include.
+          maxLength: 200
+      required:
+        - product_name
+        - product_description
+
+    GoogleAdsRequest:
+      type: object
+      properties:
+        product_name:
+          type: string
+          description: Name of the product or service.
+          minLength: 2
+          maxLength: 100
+        product_description:
+          type: string
+          description: Description of the product or service.
+          minLength: 2
+          maxLength: 600
+        search_term:
+          type: string
+          description: Target search term for the ad.
+          maxLength: 200
+      required:
+        - product_name
+        - product_description
+
+    InstagramCaptionsRequest:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the Instagram post content.
+          minLength: 2
+          maxLength: 600
+      required:
+        - description
+
+    TweetsRequest:
+      type: object
+      properties:
+        topic:
+          type: string
+          description: Topic for the tweet.
+          minLength: 2
+          maxLength: 200
+      required:
+        - topic
+
+    ColdEmailsRequest:
+      type: object
+      properties:
+        from_name:
+          type: string
+          description: Sender name.
+          minLength: 2
+          maxLength: 100
+        to_name:
+          type: string
+          description: Recipient name.
+          minLength: 2
+          maxLength: 100
+        goal:
+          type: string
+          description: Goal of the cold email.
+          minLength: 2
+          maxLength: 600
+        scenario:
+          type: string
+          description: Context or scenario for the email.
+          maxLength: 600
+      required:
+        - from_name
+        - to_name
+        - goal
+
+    SubjectLinesRequest:
+      type: object
+      properties:
+        product_name:
+          type: string
+          description: Name of the product or service.
+          minLength: 2
+          maxLength: 100
+        product_description:
+          type: string
+          description: Description of the product or service.
+          minLength: 2
+          maxLength: 600
+        email_type:
+          type: string
+          description: Type of email (e.g. promotional, newsletter, welcome).
+          maxLength: 100
+      required:
+        - product_name
+        - product_description
+
+    SeoMetaTagsRequest:
+      type: object
+      properties:
+        page_title:
+          type: string
+          description: Title of the page for SEO meta tags.
+          minLength: 2
+          maxLength: 200
+        page_description:
+          type: string
+          description: Brief description of the page content.
+          minLength: 2
+          maxLength: 600
+        search_term:
+          type: string
+          description: Target search term or keyword.
+          maxLength: 200
+      required:
+        - page_title
+        - page_description
+
+    ActiveVoiceRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          description: The text content to convert from passive to active voice.
+          minLength: 20
+          maxLength: 1000
+      required:
+        - content
+
+    TikTokScriptsRequest:
+      type: object
+      properties:
+        topic:
+          type: string
+          description: Topic for the TikTok video script.
+          minLength: 2
+          maxLength: 200
+      required:
+        - topic
+
+    LinkedInAdsRequest:
+      type: object
+      properties:
+        product_name:
+          type: string
+          description: Name of the product or service.
+          minLength: 2
+          maxLength: 100
+        product_description:
+          type: string
+          description: Description of the product or service.
+          minLength: 2
+          maxLength: 600
+        target_audience:
+          type: string
+          description: Target audience for the ad.
+          maxLength: 200
+      required:
+        - product_name
+        - product_description
+
+    ProductNamesRequest:
+      type: object
+      properties:
+        product_description:
+          type: string
+          description: Description of the product to name.
+          minLength: 2
+          maxLength: 600
+        keywords:
+          type: string
+          description: Keywords to incorporate in the product name.
+          maxLength: 200
+      required:
+        - product_description
+
+    QuestionsRequest:
+      type: object
+      properties:
+        topic:
+          type: string
+          description: Topic for generating questions or polls.
+          minLength: 2
+          maxLength: 200
+      required:
+        - topic
+
+    AmazonProductDescriptionsRequest:
+      type: object
+      properties:
+        product_name:
+          type: string
+          description: Name of the Amazon product.
+          minLength: 2
+          maxLength: 100
+        product_features:
+          type: string
+          description: Key features and benefits of the product.
+          minLength: 2
+          maxLength: 600
+      required:
+        - product_name
+        - product_features
+
+  parameters:
+    engine:
+      name: engine
+      in: query
+      required: true
+      description: Quality tier of the content generation engine.
+      schema:
+        type: string
+        enum:
+          - economy
+          - average
+          - good
+          - premium
+    language:
+      name: language
+      in: query
+      required: true
+      description: Target language for the generated content.
+      schema:
+        type: string
+        enum:
+          - en
+          - nl
+          - fr
+          - de
+          - it
+          - pl
+          - es
+          - pt-pt
+          - pt-br
+          - ru
+          - ja
+          - zh
+          - bg
+          - cs
+          - da
+          - el
+          - hu
+          - lt
+          - lv
+          - ro
+          - sk
+          - sl
+          - sv
+          - fi
+          - et
+    numCopies:
+      name: num_copies
+      in: query
+      required: true
+      description: Number of content variations to generate (1-5).
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 5
+
+paths:
+  # ─── ChatSonic ───
+  /v2/business/content/chatsonic:
+    post:
+      operationId: chatSonic
+      summary: ChatSonic (Like ChatGPT)
+      description: |
+        Conversational AI chatbot with real-time Google search integration,
+        memory functionality, and support for 24 languages.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatSonicRequest'
+      responses:
+        '200':
+          description: Successful response with ChatSonic reply.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatSonicResponse'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  # ─── Photosonic ───
+  /v1/business/photosonic/generate-image:
+    post:
+      operationId: generateImage
+      summary: Generate Image
+      description: Generate images from text descriptions using Photosonic AI.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateImageRequest'
+      responses:
+        '200':
+          description: Successful response with generated images.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerateImageResponse'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  # ─── Article & Blog ───
+  /v2/business/content/blog-ideas:
+    post:
+      operationId: blogIdeas
+      summary: AI Article Ideas
+      description: Generate creative blog article ideas for a given topic.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlogIdeasRequest'
+      responses:
+        '200':
+          description: Successful response with generated blog ideas.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /v2/business/content/blog-intros:
+    post:
+      operationId: blogIntros
+      summary: AI Article Intros
+      description: Generate compelling introductions for a blog article.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlogIntrosRequest'
+      responses:
+        '200':
+          description: Successful response with generated blog intros.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /v2/business/content/blog-outlines:
+    post:
+      operationId: blogOutlines
+      summary: AI Article Outlines
+      description: Generate structured outlines for a blog article.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlogOutlinesRequest'
+      responses:
+        '200':
+          description: Successful response with generated outlines.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /v2/business/content/ai-article-writer-v3:
+    post:
+      operationId: articleWriterV3
+      summary: AI Article Writer 3.0
+      description: Generate a full-length SEO-optimized article (~1500 words) from a title, intro, and section titles.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleWriterV3Request'
+      responses:
+        '200':
+          description: Successful response with generated article.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  # ─── Content Optimization ───
+  /v2/business/content/content-rephrase:
+    post:
+      operationId: contentRephrase
+      summary: Content Rephrase
+      description: Rephrase content while maintaining meaning, optionally with a specific tone.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContentRephraseRequest'
+      responses:
+        '200':
+          description: Successful response with rephrased content.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /v2/business/content/content-shorten:
+    post:
+      operationId: contentShorten
+      summary: Content Shorten
+      description: Shorten content while preserving key information.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContentShortenRequest'
+      responses:
+        '200':
+          description: Successful response with shortened content.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /v2/business/content/tone-changer:
+    post:
+      operationId: toneChanger
+      summary: Tone Changer
+      description: Change the tone of content to match a desired style (professional, casual, friendly, etc.).
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToneChangerRequest'
+      responses:
+        '200':
+          description: Successful response with tone-changed content.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /v2/business/content/active-voice:
+    post:
+      operationId: passiveToActiveVoice
+      summary: Passive to Active Voice
+      description: Convert content from passive voice to active voice for more engaging writing.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActiveVoiceRequest'
+      responses:
+        '200':
+          description: Successful response with active voice content.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  # ─── Marketing & Ads ───
+  /v2/business/content/aida:
+    post:
+      operationId: aidaFramework
+      summary: AIDA Framework
+      description: Generate marketing copy using the AIDA (Attention, Interest, Desire, Action) framework.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AidaRequest'
+      responses:
+        '200':
+          description: Successful response with AIDA marketing copy.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /v2/business/content/facebook-ads:
+    post:
+      operationId: facebookAds
+      summary: Facebook Ads
+      description: Generate compelling Facebook ad copy.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FacebookAdsRequest'
+      responses:
+        '200':
+          description: Successful response with generated Facebook ad copy.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /v2/business/content/google-ads:
+    post:
+      operationId: googleAds
+      summary: Google Ads
+      description: Generate Google Ads headlines and descriptions.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAdsRequest'
+      responses:
+        '200':
+          description: Successful response with generated Google ad copy.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /v2/business/content/linkedin-ads:
+    post:
+      operationId: linkedInAds
+      summary: LinkedIn Ads
+      description: Generate professional LinkedIn ad copy.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LinkedInAdsRequest'
+      responses:
+        '200':
+          description: Successful response with generated LinkedIn ad copy.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  # ─── Social Media ───
+  /v2/business/content/instagram-captions:
+    post:
+      operationId: instagramCaptions
+      summary: Instagram Captions
+      description: Generate engaging Instagram captions for posts.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstagramCaptionsRequest'
+      responses:
+        '200':
+          description: Successful response with generated captions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /v2/business/content/tweets:
+    post:
+      operationId: tweets
+      summary: Tweets
+      description: Generate engaging tweets for a topic.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TweetsRequest'
+      responses:
+        '200':
+          description: Successful response with generated tweets.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /v2/business/content/tiktok-scripts:
+    post:
+      operationId: tikTokScripts
+      summary: TikTok Video Scripts
+      description: Generate creative TikTok video scripts for a topic.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TikTokScriptsRequest'
+      responses:
+        '200':
+          description: Successful response with generated scripts.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  # ─── Email ───
+  /v2/business/content/cold-emails-v2:
+    post:
+      operationId: coldEmails
+      summary: Cold Emails
+      description: Generate personalized cold email copy with sender and recipient context.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ColdEmailsRequest'
+      responses:
+        '200':
+          description: Successful response with generated cold email copy.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /v2/business/content/subject-lines:
+    post:
+      operationId: emailSubjectLines
+      summary: Email Subject Lines
+      description: Generate attention-grabbing email subject lines.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubjectLinesRequest'
+      responses:
+        '200':
+          description: Successful response with generated subject lines.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  # ─── E-commerce ───
+  /v2/business/content/product-descriptions:
+    post:
+      operationId: productDescriptions
+      summary: Product Descriptions
+      description: Generate compelling product descriptions.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDescriptionsRequest'
+      responses:
+        '200':
+          description: Successful response with generated product descriptions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /v2/business/content/product-names:
+    post:
+      operationId: productNames
+      summary: Product Names
+      description: Generate creative product names from a description and keywords.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductNamesRequest'
+      responses:
+        '200':
+          description: Successful response with generated product names.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /v2/business/content/amazon-product-descriptions:
+    post:
+      operationId: amazonProductDescriptions
+      summary: Amazon Product Descriptions
+      description: Generate optimized Amazon product descriptions.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AmazonProductDescriptionsRequest'
+      responses:
+        '200':
+          description: Successful response with generated Amazon descriptions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  # ─── SEO ───
+  /v2/business/content/meta-blog:
+    post:
+      operationId: seoMetaTagsBlogPost
+      summary: SEO Meta Tags (Blog Post)
+      description: Generate SEO meta title and description for a blog post.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SeoMetaTagsRequest'
+      responses:
+        '200':
+          description: Successful response with generated meta tags.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /v2/business/content/meta-home:
+    post:
+      operationId: seoMetaTagsHomepage
+      summary: SEO Meta Tags (Homepage)
+      description: Generate SEO meta title and description for a homepage.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SeoMetaTagsRequest'
+      responses:
+        '200':
+          description: Successful response with generated meta tags.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /v2/business/content/meta-prod:
+    post:
+      operationId: seoMetaTagsProductPage
+      summary: SEO Meta Tags (Product Page)
+      description: Generate SEO meta title and description for a product page.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SeoMetaTagsRequest'
+      responses:
+        '200':
+          description: Successful response with generated meta tags.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  # ─── Engagement ───
+  /v2/business/content/question-generation:
+    post:
+      operationId: questionGeneration
+      summary: Questions
+      description: Generate engaging questions and polls that increase audience participation.
+      parameters:
+        - $ref: '#/components/parameters/engine'
+        - $ref: '#/components/parameters/language'
+        - $ref: '#/components/parameters/numCopies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionsRequest'
+      responses:
+        '200':
+          description: Successful response with generated questions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentOutput'
+        '422':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
