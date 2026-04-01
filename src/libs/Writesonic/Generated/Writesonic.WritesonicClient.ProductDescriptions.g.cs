@@ -264,7 +264,6 @@ namespace Writesonic
             string productCharacteristics,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
-
             var __request = new global::Writesonic.ProductDescriptionsRequest
             {
                 ProductName = productName,

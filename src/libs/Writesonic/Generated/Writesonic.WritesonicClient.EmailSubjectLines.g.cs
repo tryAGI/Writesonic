@@ -268,7 +268,6 @@ namespace Writesonic
             string? emailType = default,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
-
             var __request = new global::Writesonic.SubjectLinesRequest
             {
                 ProductName = productName,

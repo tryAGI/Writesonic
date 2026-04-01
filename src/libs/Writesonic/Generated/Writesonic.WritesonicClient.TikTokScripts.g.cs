@@ -260,7 +260,6 @@ namespace Writesonic
             string topic,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
-
             var __request = new global::Writesonic.TikTokScriptsRequest
             {
                 Topic = topic,
