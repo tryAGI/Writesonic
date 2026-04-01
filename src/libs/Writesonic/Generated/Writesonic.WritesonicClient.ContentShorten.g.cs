@@ -260,6 +260,7 @@ namespace Writesonic
             string contentToShorten,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
+
             var __request = new global::Writesonic.ContentShortenRequest
             {
                 ContentToShorten = contentToShorten,

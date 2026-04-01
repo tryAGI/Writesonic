@@ -246,6 +246,7 @@ namespace Writesonic
             int? imageHeight = default,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
+
             var __request = new global::Writesonic.GenerateImageRequest
             {
                 Prompt = prompt,

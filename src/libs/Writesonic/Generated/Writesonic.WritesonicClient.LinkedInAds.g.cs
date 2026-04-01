@@ -268,6 +268,7 @@ namespace Writesonic
             string? targetAudience = default,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
+
             var __request = new global::Writesonic.LinkedInAdsRequest
             {
                 ProductName = productName,
