@@ -276,6 +276,7 @@ namespace Writesonic
             global::System.Collections.Generic.IList<global::Writesonic.HistoryEntry>? historyData = default,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
+
             var __request = new global::Writesonic.ChatSonicRequest
             {
                 EnableGoogleResults = enableGoogleResults,

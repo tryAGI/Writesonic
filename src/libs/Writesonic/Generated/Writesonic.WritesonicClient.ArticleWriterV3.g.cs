@@ -268,6 +268,7 @@ namespace Writesonic
             string articleSections,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
+
             var __request = new global::Writesonic.ArticleWriterV3Request
             {
                 ArticleTitle = articleTitle,

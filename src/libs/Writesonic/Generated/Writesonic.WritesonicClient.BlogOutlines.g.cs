@@ -260,6 +260,7 @@ namespace Writesonic
             string blogTitle,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
+
             var __request = new global::Writesonic.BlogOutlinesRequest
             {
                 BlogTitle = blogTitle,

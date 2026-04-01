@@ -272,6 +272,7 @@ namespace Writesonic
             string? scenario = default,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
+
             var __request = new global::Writesonic.ColdEmailsRequest
             {
                 FromName = fromName,

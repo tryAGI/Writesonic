@@ -260,6 +260,7 @@ namespace Writesonic
             string content,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
+
             var __request = new global::Writesonic.ActiveVoiceRequest
             {
                 Content = content,

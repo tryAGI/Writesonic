@@ -264,6 +264,7 @@ namespace Writesonic
             string? toneOfVoice = default,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
+
             var __request = new global::Writesonic.ContentRephraseRequest
             {
                 ContentToRephrase = contentToRephrase,

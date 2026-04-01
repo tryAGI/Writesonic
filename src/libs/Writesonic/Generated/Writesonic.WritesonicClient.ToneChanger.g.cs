@@ -264,6 +264,7 @@ namespace Writesonic
             string tone,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
+
             var __request = new global::Writesonic.ToneChangerRequest
             {
                 Content = content,
