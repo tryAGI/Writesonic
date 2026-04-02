@@ -15,7 +15,7 @@ namespace Writesonic
         {
             Authorizing(HttpClient, ref apiKey);
 
-            AuthorizeUsingBearer(apiKey);
+            AuthorizeUsingApiKeyInHeader(apiKey);
 
             Authorized(HttpClient);
         }
