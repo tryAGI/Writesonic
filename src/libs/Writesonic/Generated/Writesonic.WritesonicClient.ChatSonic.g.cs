@@ -5,6 +5,25 @@ namespace Writesonic
 {
     public partial class WritesonicClient
     {
+
+
+        private static readonly global::Writesonic.EndPointSecurityRequirement s_ChatSonicSecurityRequirement0 =
+            new global::Writesonic.EndPointSecurityRequirement
+            {
+                Authorizations = new global::Writesonic.EndPointAuthorizationRequirement[]
+                {                    new global::Writesonic.EndPointAuthorizationRequirement
+                    {
+                        Type = "ApiKey",
+                        Location = "Header",
+                        Name = "X-API-KEY",
+                        FriendlyName = "ApiKeyInHeader",
+                    },
+                },
+            };
+        private static readonly global::Writesonic.EndPointSecurityRequirement[] s_ChatSonicSecurityRequirements =
+            new global::Writesonic.EndPointSecurityRequirement[]
+            {                s_ChatSonicSecurityRequirement0,
+            };
         partial void PrepareChatSonicArguments(
             global::System.Net.Http.HttpClient httpClient,
             ref global::Writesonic.ChatSonicEngine engine,
@@ -57,6 +76,12 @@ namespace Writesonic
                 numCopies: ref numCopies,
                 request: request);
 
+
+            var __authorizations = global::Writesonic.EndPointSecurityResolver.ResolveAuthorizations(
+                availableAuthorizations: Authorizations,
+                securityRequirements: s_ChatSonicSecurityRequirements,
+                operationName: "ChatSonicAsync");
+
             var __pathBuilder = new global::Writesonic.PathBuilder(
                 path: "/v2/business/content/chatsonic",
                 baseUri: HttpClient.BaseAddress); 
@@ -64,7 +89,7 @@ namespace Writesonic
                 .AddRequiredParameter("engine", engine.ToValueString())
                 .AddRequiredParameter("language", language.ToValueString())
                 .AddRequiredParameter("num_copies", numCopies.ToString()!) 
-                ; 
+                ;
             var __path = __pathBuilder.ToString();
             using var __httpRequest = new global::System.Net.Http.HttpRequestMessage(
                 method: global::System.Net.Http.HttpMethod.Post,
@@ -74,7 +99,7 @@ namespace Writesonic
             __httpRequest.VersionPolicy = global::System.Net.Http.HttpVersionPolicy.RequestVersionOrHigher;
 #endif
 
-            foreach (var __authorization in Authorizations)
+            foreach (var __authorization in __authorizations)
             {
                 if (__authorization.Type == "Http" ||
                     __authorization.Type == "OAuth2")

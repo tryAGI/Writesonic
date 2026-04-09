@@ -5,6 +5,25 @@ namespace Writesonic
 {
     public partial class WritesonicClient
     {
+
+
+        private static readonly global::Writesonic.EndPointSecurityRequirement s_SeoMetaTagsHomepageSecurityRequirement0 =
+            new global::Writesonic.EndPointSecurityRequirement
+            {
+                Authorizations = new global::Writesonic.EndPointAuthorizationRequirement[]
+                {                    new global::Writesonic.EndPointAuthorizationRequirement
+                    {
+                        Type = "ApiKey",
+                        Location = "Header",
+                        Name = "X-API-KEY",
+                        FriendlyName = "ApiKeyInHeader",
+                    },
+                },
+            };
+        private static readonly global::Writesonic.EndPointSecurityRequirement[] s_SeoMetaTagsHomepageSecurityRequirements =
+            new global::Writesonic.EndPointSecurityRequirement[]
+            {                s_SeoMetaTagsHomepageSecurityRequirement0,
+            };
         partial void PrepareSeoMetaTagsHomepageArguments(
             global::System.Net.Http.HttpClient httpClient,
             ref global::Writesonic.SeoMetaTagsHomepageEngine engine,
@@ -56,6 +75,12 @@ namespace Writesonic
                 numCopies: ref numCopies,
                 request: request);
 
+
+            var __authorizations = global::Writesonic.EndPointSecurityResolver.ResolveAuthorizations(
+                availableAuthorizations: Authorizations,
+                securityRequirements: s_SeoMetaTagsHomepageSecurityRequirements,
+                operationName: "SeoMetaTagsHomepageAsync");
+
             var __pathBuilder = new global::Writesonic.PathBuilder(
                 path: "/v2/business/content/meta-home",
                 baseUri: HttpClient.BaseAddress); 
@@ -63,7 +88,7 @@ namespace Writesonic
                 .AddRequiredParameter("engine", engine.ToValueString())
                 .AddRequiredParameter("language", language.ToValueString())
                 .AddRequiredParameter("num_copies", numCopies.ToString()!) 
-                ; 
+                ;
             var __path = __pathBuilder.ToString();
             using var __httpRequest = new global::System.Net.Http.HttpRequestMessage(
                 method: global::System.Net.Http.HttpMethod.Post,
@@ -73,7 +98,7 @@ namespace Writesonic
             __httpRequest.VersionPolicy = global::System.Net.Http.HttpVersionPolicy.RequestVersionOrHigher;
 #endif
 
-            foreach (var __authorization in Authorizations)
+            foreach (var __authorization in __authorizations)
             {
                 if (__authorization.Type == "Http" ||
                     __authorization.Type == "OAuth2")

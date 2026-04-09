@@ -15,7 +15,7 @@ namespace Writesonic
         /// <summary>
         /// Production server
         /// </summary>
-        public const string DefaultBaseUrl = "https://api.writesonic.com";
+        public const string DefaultBaseUrl = "https://api.writesonic.com/";
 
         private bool _disposeHttpClient = true;
 
