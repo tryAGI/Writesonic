@@ -6,6 +6,7 @@ namespace Writesonic
     public sealed partial class WritesonicClient
     {
         /// <inheritdoc cref="WritesonicClient(global::System.Net.Http.HttpClient?, global::System.Uri?, global::System.Collections.Generic.List{global::Writesonic.EndPointAuthorization}?, bool)"/>
+
         public WritesonicClient(
             string apiKey,
             global::System.Net.Http.HttpClient? httpClient = null,
