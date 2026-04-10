@@ -12,6 +12,7 @@ namespace Writesonic
         /// <param name="language"></param>
         /// <param name="numCopies"></param>
         /// <param name="request"></param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
         /// <param name="cancellationToken">The token to cancel the operation with</param>
         /// <exception cref="global::Writesonic.ApiException"></exception>
         global::System.Threading.Tasks.Task<global::System.Collections.Generic.IList<global::Writesonic.ContentOutput>> BlogIntrosAsync(
@@ -20,6 +21,7 @@ namespace Writesonic
             int numCopies,
 
             global::Writesonic.BlogIntrosRequest request,
+            global::Writesonic.AutoSDKRequestOptions? requestOptions = default,
             global::System.Threading.CancellationToken cancellationToken = default);
         /// <summary>
         /// AI Article Intros<br/>
@@ -31,6 +33,7 @@ namespace Writesonic
         /// <param name="blogTitle">
         /// Title of the blog article to generate an introduction for.
         /// </param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
         /// <param name="cancellationToken">The token to cancel the operation with</param>
         /// <exception cref="global::System.InvalidOperationException"></exception>
         global::System.Threading.Tasks.Task<global::System.Collections.Generic.IList<global::Writesonic.ContentOutput>> BlogIntrosAsync(
@@ -38,6 +41,7 @@ namespace Writesonic
             global::Writesonic.BlogIntrosLanguage language,
             int numCopies,
             string blogTitle,
+            global::Writesonic.AutoSDKRequestOptions? requestOptions = default,
             global::System.Threading.CancellationToken cancellationToken = default);
     }
 }

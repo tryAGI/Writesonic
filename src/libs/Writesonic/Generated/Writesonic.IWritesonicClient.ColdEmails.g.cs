@@ -12,6 +12,7 @@ namespace Writesonic
         /// <param name="language"></param>
         /// <param name="numCopies"></param>
         /// <param name="request"></param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
         /// <param name="cancellationToken">The token to cancel the operation with</param>
         /// <exception cref="global::Writesonic.ApiException"></exception>
         global::System.Threading.Tasks.Task<global::System.Collections.Generic.IList<global::Writesonic.ContentOutput>> ColdEmailsAsync(
@@ -20,6 +21,7 @@ namespace Writesonic
             int numCopies,
 
             global::Writesonic.ColdEmailsRequest request,
+            global::Writesonic.AutoSDKRequestOptions? requestOptions = default,
             global::System.Threading.CancellationToken cancellationToken = default);
         /// <summary>
         /// Cold Emails<br/>
@@ -40,6 +42,7 @@ namespace Writesonic
         /// <param name="scenario">
         /// Context or scenario for the email.
         /// </param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
         /// <param name="cancellationToken">The token to cancel the operation with</param>
         /// <exception cref="global::System.InvalidOperationException"></exception>
         global::System.Threading.Tasks.Task<global::System.Collections.Generic.IList<global::Writesonic.ContentOutput>> ColdEmailsAsync(
@@ -50,6 +53,7 @@ namespace Writesonic
             string toName,
             string goal,
             string? scenario = default,
+            global::Writesonic.AutoSDKRequestOptions? requestOptions = default,
             global::System.Threading.CancellationToken cancellationToken = default);
     }
 }
