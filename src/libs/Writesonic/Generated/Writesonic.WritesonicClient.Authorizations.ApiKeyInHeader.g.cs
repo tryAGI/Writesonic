@@ -26,6 +26,7 @@ namespace Writesonic
             Authorizations.Add(new global::Writesonic.EndPointAuthorization
             {
                 Type = "ApiKey",
+                SchemeId = "ApikeyXApiKey",
                 Location = "Header",
                 Name = "X-API-KEY",
                 Value = apiKey,
