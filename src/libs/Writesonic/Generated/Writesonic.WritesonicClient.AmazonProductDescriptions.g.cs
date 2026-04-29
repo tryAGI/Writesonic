@@ -154,9 +154,9 @@ namespace Writesonic
                 PrepareAmazonProductDescriptionsRequest(
                     httpClient: HttpClient,
                     httpRequestMessage: __httpRequest,
-                    engine: engine,
-                    language: language,
-                    numCopies: numCopies,
+                    engine: engine!,
+                    language: language!,
+                    numCopies: numCopies!,
                     request: request);
 
                 return __httpRequest;
