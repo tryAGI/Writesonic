@@ -21,6 +21,19 @@ namespace Writesonic
         /// Generate Image<br/>
         /// Generate images from text descriptions using Photosonic AI.
         /// </summary>
+        /// <param name="request"></param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
+        /// <param name="cancellationToken">The token to cancel the operation with</param>
+        /// <exception cref="global::Writesonic.ApiException"></exception>
+        global::System.Threading.Tasks.Task<global::Writesonic.AutoSDKHttpResponse<global::Writesonic.GenerateImageResponse>> GenerateImageAsResponseAsync(
+
+            global::Writesonic.GenerateImageRequest request,
+            global::Writesonic.AutoSDKRequestOptions? requestOptions = default,
+            global::System.Threading.CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Generate Image<br/>
+        /// Generate images from text descriptions using Photosonic AI.
+        /// </summary>
         /// <param name="prompt">
         /// Description of the image to generate.
         /// </param>

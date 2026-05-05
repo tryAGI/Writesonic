@@ -30,6 +30,25 @@ namespace Writesonic
         /// <param name="engine"></param>
         /// <param name="language"></param>
         /// <param name="numCopies"></param>
+        /// <param name="request"></param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
+        /// <param name="cancellationToken">The token to cancel the operation with</param>
+        /// <exception cref="global::Writesonic.ApiException"></exception>
+        global::System.Threading.Tasks.Task<global::Writesonic.AutoSDKHttpResponse<global::System.Collections.Generic.IList<global::Writesonic.ContentOutput>>> BlogIntrosAsResponseAsync(
+            global::Writesonic.BlogIntrosEngine engine,
+            global::Writesonic.BlogIntrosLanguage language,
+            int numCopies,
+
+            global::Writesonic.BlogIntrosRequest request,
+            global::Writesonic.AutoSDKRequestOptions? requestOptions = default,
+            global::System.Threading.CancellationToken cancellationToken = default);
+        /// <summary>
+        /// AI Article Intros<br/>
+        /// Generate compelling introductions for a blog article.
+        /// </summary>
+        /// <param name="engine"></param>
+        /// <param name="language"></param>
+        /// <param name="numCopies"></param>
         /// <param name="blogTitle">
         /// Title of the blog article to generate an introduction for.
         /// </param>

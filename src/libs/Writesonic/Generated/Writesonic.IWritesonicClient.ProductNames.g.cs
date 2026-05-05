@@ -30,6 +30,25 @@ namespace Writesonic
         /// <param name="engine"></param>
         /// <param name="language"></param>
         /// <param name="numCopies"></param>
+        /// <param name="request"></param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
+        /// <param name="cancellationToken">The token to cancel the operation with</param>
+        /// <exception cref="global::Writesonic.ApiException"></exception>
+        global::System.Threading.Tasks.Task<global::Writesonic.AutoSDKHttpResponse<global::System.Collections.Generic.IList<global::Writesonic.ContentOutput>>> ProductNamesAsResponseAsync(
+            global::Writesonic.ProductNamesEngine engine,
+            global::Writesonic.ProductNamesLanguage language,
+            int numCopies,
+
+            global::Writesonic.ProductNamesRequest request,
+            global::Writesonic.AutoSDKRequestOptions? requestOptions = default,
+            global::System.Threading.CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Product Names<br/>
+        /// Generate creative product names from a description and keywords.
+        /// </summary>
+        /// <param name="engine"></param>
+        /// <param name="language"></param>
+        /// <param name="numCopies"></param>
         /// <param name="productDescription">
         /// Description of the product to name.
         /// </param>
