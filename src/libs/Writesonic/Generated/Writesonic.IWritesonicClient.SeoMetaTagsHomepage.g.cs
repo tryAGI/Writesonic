@@ -30,6 +30,25 @@ namespace Writesonic
         /// <param name="engine"></param>
         /// <param name="language"></param>
         /// <param name="numCopies"></param>
+        /// <param name="request"></param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
+        /// <param name="cancellationToken">The token to cancel the operation with</param>
+        /// <exception cref="global::Writesonic.ApiException"></exception>
+        global::System.Threading.Tasks.Task<global::Writesonic.AutoSDKHttpResponse<global::System.Collections.Generic.IList<global::Writesonic.ContentOutput>>> SeoMetaTagsHomepageAsResponseAsync(
+            global::Writesonic.SeoMetaTagsHomepageEngine engine,
+            global::Writesonic.SeoMetaTagsHomepageLanguage language,
+            int numCopies,
+
+            global::Writesonic.SeoMetaTagsRequest request,
+            global::Writesonic.AutoSDKRequestOptions? requestOptions = default,
+            global::System.Threading.CancellationToken cancellationToken = default);
+        /// <summary>
+        /// SEO Meta Tags (Homepage)<br/>
+        /// Generate SEO meta title and description for a homepage.
+        /// </summary>
+        /// <param name="engine"></param>
+        /// <param name="language"></param>
+        /// <param name="numCopies"></param>
         /// <param name="pageTitle">
         /// Title of the page for SEO meta tags.
         /// </param>
