@@ -52,5 +52,6 @@ namespace Writesonic
         public ChatSonicResponse()
         {
         }
+
     }
 }

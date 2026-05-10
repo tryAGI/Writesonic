@@ -79,5 +79,6 @@ namespace Writesonic
         public ChatSonicRequest()
         {
         }
+
     }
 }

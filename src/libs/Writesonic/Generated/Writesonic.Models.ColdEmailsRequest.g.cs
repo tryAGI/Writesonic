@@ -77,5 +77,6 @@ namespace Writesonic
         public ColdEmailsRequest()
         {
         }
+
     }
 }

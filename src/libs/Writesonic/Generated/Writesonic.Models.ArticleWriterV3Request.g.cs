@@ -66,5 +66,6 @@ namespace Writesonic
         public ArticleWriterV3Request()
         {
         }
+
     }
 }

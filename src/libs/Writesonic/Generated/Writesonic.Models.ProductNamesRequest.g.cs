@@ -53,5 +53,6 @@ namespace Writesonic
         public ProductNamesRequest()
         {
         }
+
     }
 }
