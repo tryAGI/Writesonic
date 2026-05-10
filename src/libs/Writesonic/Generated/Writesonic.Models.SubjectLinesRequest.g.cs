@@ -65,5 +65,6 @@ namespace Writesonic
         public SubjectLinesRequest()
         {
         }
+
     }
 }

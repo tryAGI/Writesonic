@@ -57,5 +57,6 @@ namespace Writesonic
         public ValidationErrorDetailItem()
         {
         }
+
     }
 }
