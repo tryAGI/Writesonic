@@ -81,5 +81,6 @@ namespace Writesonic
         public GenerateImageRequest()
         {
         }
+
     }
 }

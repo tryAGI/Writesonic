@@ -76,5 +76,6 @@ namespace Writesonic
         public FacebookAdsRequest()
         {
         }
+
     }
 }

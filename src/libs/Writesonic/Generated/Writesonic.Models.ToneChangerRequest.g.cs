@@ -54,5 +54,6 @@ namespace Writesonic
         public ToneChangerRequest()
         {
         }
+
     }
 }
