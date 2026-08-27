@@ -9,7 +9,7 @@ namespace Writesonic
     public sealed partial class ValidationError
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [global::System.Text.Json.Serialization.JsonPropertyName("detail")]
         public global::System.Collections.Generic.IList<global::Writesonic.ValidationErrorDetailItem>? Detail { get; set; }

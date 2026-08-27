@@ -4,24 +4,24 @@
 namespace Writesonic
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public enum QuestionGenerationEngine
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Average,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Economy,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Good,
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Premium,
     }
