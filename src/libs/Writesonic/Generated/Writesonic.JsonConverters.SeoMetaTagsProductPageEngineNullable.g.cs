@@ -20,7 +20,7 @@ namespace Writesonic.JsonConverters
                     {
                         return global::Writesonic.SeoMetaTagsProductPageEngineExtensions.ToEnum(stringValue);
                     }
-                    
+
                     break;
                 }
                 case global::System.Text.Json.JsonTokenType.Number:

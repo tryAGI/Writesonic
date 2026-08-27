@@ -20,7 +20,7 @@ namespace Writesonic.JsonConverters
                     {
                         return global::Writesonic.LinkedInAdsLanguageExtensions.ToEnum(stringValue) ?? default;
                     }
-                    
+
                     break;
                 }
                 case global::System.Text.Json.JsonTokenType.Number:

@@ -4,24 +4,24 @@
 namespace Writesonic
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public sealed partial class ValidationErrorDetailItem
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [global::System.Text.Json.Serialization.JsonPropertyName("loc")]
         public global::System.Collections.Generic.IList<string>? Loc { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [global::System.Text.Json.Serialization.JsonPropertyName("msg")]
         public string? Msg { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [global::System.Text.Json.Serialization.JsonPropertyName("type")]
         public string? Type { get; set; }

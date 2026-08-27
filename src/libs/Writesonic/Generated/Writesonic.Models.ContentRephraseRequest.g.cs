@@ -4,7 +4,7 @@
 namespace Writesonic
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public sealed partial class ContentRephraseRequest
     {
