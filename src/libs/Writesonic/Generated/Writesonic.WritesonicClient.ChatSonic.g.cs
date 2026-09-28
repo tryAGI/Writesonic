@@ -141,7 +141,7 @@ namespace Writesonic
                             __pathBuilder
                                 .AddRequiredParameter("engine", engine.ToValueString())
                                 .AddRequiredParameter("language", language.ToValueString())
-                                .AddRequiredParameter("num_copies", numCopies.ToString()!)
+                                .AddRequiredParameter("num_copies", numCopies.ToString() ?? throw new global::System.InvalidOperationException("A required query parameter returned null from ToString()."))
                                 ;
                             var __path = __pathBuilder.ToString();
                 __path = global::Writesonic.AutoSDKRequestOptionsSupport.AppendQueryParameters(
@@ -189,9 +189,9 @@ namespace Writesonic
                 PrepareChatSonicRequest(
                     httpClient: HttpClient,
                     httpRequestMessage: __httpRequest,
-                    engine: engine!,
-                    language: language!,
-                    numCopies: numCopies!,
+                    engine: engine,
+                    language: language,
+                    numCopies: numCopies,
                     request: request);
 
                 return __httpRequest;
@@ -214,7 +214,7 @@ namespace Writesonic
                                 pathTemplate: "\"/v2/business/content/chatsonic\"",
                                 httpMethod: "POST",
                                 baseUri: BaseUri,
-                                request: __httpRequest!,
+                                request: __httpRequest ?? throw new global::System.InvalidOperationException("The HTTP request was not created before invoking a request hook."),
                                 response: null,
                                 exception: null,
                                 clientOptions: Options,
@@ -248,7 +248,7 @@ namespace Writesonic
                                 pathTemplate: "\"/v2/business/content/chatsonic\"",
                                 httpMethod: "POST",
                                 baseUri: BaseUri,
-                                request: __httpRequest!,
+                                request: __httpRequest ?? throw new global::System.InvalidOperationException("The HTTP request was not created before invoking a request hook."),
                                 response: null,
                                 exception: __exception,
                                 clientOptions: Options,
@@ -289,7 +289,7 @@ namespace Writesonic
                                 pathTemplate: "\"/v2/business/content/chatsonic\"",
                                 httpMethod: "POST",
                                 baseUri: BaseUri,
-                                request: __httpRequest!,
+                                request: __httpRequest ?? throw new global::System.InvalidOperationException("The HTTP request was not created before invoking a request hook."),
                                 response: __response,
                                 exception: null,
                                 clientOptions: Options,
@@ -337,7 +337,7 @@ namespace Writesonic
                                 pathTemplate: "\"/v2/business/content/chatsonic\"",
                                 httpMethod: "POST",
                                 baseUri: BaseUri,
-                                request: __httpRequest!,
+                                request: __httpRequest ?? throw new global::System.InvalidOperationException("The HTTP request was not created before invoking a request hook."),
                                 response: __response,
                                 exception: null,
                                 clientOptions: Options,
@@ -359,7 +359,7 @@ namespace Writesonic
                                 pathTemplate: "\"/v2/business/content/chatsonic\"",
                                 httpMethod: "POST",
                                 baseUri: BaseUri,
-                                request: __httpRequest!,
+                                request: __httpRequest ?? throw new global::System.InvalidOperationException("The HTTP request was not created before invoking a request hook."),
                                 response: __response,
                                 exception: null,
                                 clientOptions: Options,
